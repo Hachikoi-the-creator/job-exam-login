@@ -46,6 +46,7 @@ o	Tiempo de sesión configurable desde base de datos
 # DB commands
 [docs to get data](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/)
 [dynamic api endpoints](https://www.thisdot.co/blog/building-full-stack-react-apps-with-next-js-api-routes)
+[form POST help](https://herotofu.com/solutions/guides/react-post-form-data-to-api)
 
 
 ## Adding roles
