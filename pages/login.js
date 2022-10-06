@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { useStateContext } from "../context/StateContext";
 import { useRouter } from "next/router";
+import clientPromise from "../lib/mongodb";
 
-export default function LoginPage() {
+export default function LoginPage({ serverRoles }) {
   const { updateUser, updateRole } = useStateContext();
   const firstName = useRef();
   const userEmail = useRef();
@@ -17,14 +18,12 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  // TODO: Get these from the DB
-  const roles = ["noob", "kinda cool", "pro coder", "superstar"];
-
-  // console.log(email.current.value);
+  // console.log(email.current.value);, example because I keep forgetting lol
+  // TODO: Fix the form by adding the handler inside the form tag, as action
   const signupFormHandler = async (e) => {
     e.preventDefault();
-    console.log(rol.current.value);
-    // upload this data to the db
+    // console.log(rol.current.value);
+
     // TODO: make new entry to the DB whit user state
     const sendToDb = {
       email: userEmail.current.value,
@@ -35,18 +34,31 @@ export default function LoginPage() {
       favMovie: favMovie.current.value,
       bloodType: bloodT.current.value,
     };
+    console.log(sendToDb);
+
+    // const data = new FormData();
+    // data.append("json", sendToDb);
+    const send = JSON.stringify(sendToDb);
+
+    // worked on browser wth
+    const rawResponse = await fetch("/api/newEntry", {
+      method: "POST",
+      body: send,
+    });
+
+    // console.log(rawResponse);
+
     // TODO: add external function to verify user inputs
     updateUser(sendToDb);
-    // TODO: Get the info of the user rol once it's verified it exist in the DB
-    const rolQuery = {
-      name: "noob",
-      value: "10",
-      importance: "high",
-    };
-    updateRole(rolQuery);
+
+    const rolApi = await fetch(`/api/roles/${rol.current.value}`)
+      .then((res) => res.json())
+      .then((res) => res[0]);
+
+    updateRole(rolApi);
+
     localStorage.setItem("name", JSON.stringify(sendToDb.name));
-    localStorage.setItem("role-info", JSON.stringify(rolQuery));
-    // todo: once the user has been uploaded send to the main page, and only keep name&role
+    localStorage.setItem("role-info", JSON.stringify(rolApi));
     if (true) {
       router.replace("/");
     }
@@ -68,7 +80,6 @@ export default function LoginPage() {
     <div>
       <h2>Sign Up Form</h2>
       <form action="#" method="post" className="container">
-        {/* TODO: remove default values */}
         <label htmlFor="userEmail">Email</label>
         <input
           type="text"
@@ -89,13 +100,11 @@ export default function LoginPage() {
 
         <label htmlFor="rol">Label yourself:</label>
         <select name="rol" id="rol" ref={rol}>
-          {roles &&
-            roles.map((item, key) => (
-              // todo: use the DB's _id instead
-              <option defaultValue={item} key={key}>
-                {item}
-              </option>
-            ))}
+          {serverRoles.map((role) => (
+            <option defaultValue={role.name} key={role._id}>
+              {role.name}
+            </option>
+          ))}
         </select>
 
         <label htmlFor="firstName">Name</label>
@@ -163,20 +172,21 @@ export default function LoginPage() {
 
         <button onClick={loginFormHandler}>Log In</button>
       </form>
-
-      {/* <div className="testing">
-        <button
-          onClick={async () => {
-            fetch("/api/getLabels").then((res) => {
-              console.log(res);
-            });
-            // await getLabels();
-            console.log("cost");
-          }}
-        >
-          Log labels
-        </button>
-      </div> */}
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const client = await clientPromise;
+    const db = client.db("jobTest");
+
+    const serverRoles = await db.collection("roles").find({}).toArray();
+
+    return {
+      props: { serverRoles: JSON.parse(JSON.stringify(serverRoles)) },
+    };
+  } catch (e) {
+    console.error(e);
+  }
 }

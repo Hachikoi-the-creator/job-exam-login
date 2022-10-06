@@ -44,6 +44,10 @@ o	Tiempo de sesión configurable desde base de datos
 - 10,30,80,110 values of the different roles
 
 # DB commands
+[docs to get data](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/)
+[dynamic api endpoints](https://www.thisdot.co/blog/building-full-stack-react-apps-with-next-js-api-routes)
+
+
 ## Adding roles
 - use jobTest
 - db.roles.insertMany([{name:"noob", value:"10", importance:"high"}, {name:"kinda cool", value:"30", importance:"higher"}, {name:"pro coder", value:"80", importance:"highest"},{name:"superstar", value:"110", importance:"somehow higher than higest"}])
