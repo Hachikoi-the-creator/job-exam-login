@@ -4,12 +4,12 @@ import Cryptr from "cryptr";
 export default async (req, res) => {
   const cryptr = new Cryptr("myTotallySecretKey");
 
-  console.log("api body is", req.body);
-  req.body._id = cryptr.encrypt(req.body.name).slice(0, 13);
-  console.log("some ecnripted data", req.body._id);
+  // req.body._id = cryptr.encrypt(req.body.name).slice(0, 13);
+  // console.log("some encripted data", req.body._id);
 
   if (req.method === "POST") {
-    console.log("Server data", req.body);
+    console.log("API data: ", req.body);
+    console.log("name is:", req.body.name);
 
     try {
       const client = await clientPromise;
