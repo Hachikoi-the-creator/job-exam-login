@@ -14,12 +14,12 @@ export default function Login() {
 
   if (status === "success") {
     // or change some states
-    console.log("All went well! prob");
+    console.log("All went well! prob - Login comp");
   }
 
   if (status === "error") {
     // or change some states
-    console.log("Some error happened");
+    console.log("Some error happened - Login comp");
   }
 
   return (

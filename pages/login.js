@@ -6,8 +6,6 @@ import Signup from "../components/Signup";
 import Login from "../components/LogIn";
 
 export default function LoginPage({ serverRoles }) {
-  // todo: May add max & min lenght to all inputs, may as well never not
-  // TODO: Remove all the default values for better UX
   return (
     <div>
       <div>

@@ -3,6 +3,9 @@ import { useRef } from "react";
 // import { useStateContext } from "../context/StateContext";
 import useForm from "../lib/use-form";
 
+// encrypt psw
+// req.body.psw = cryptr.encrypt(req.body.psw);
+
 const FORM_ENDPOINT = "/api/newEntry";
 
 export default function Signup({ serverRoles }) {
@@ -25,12 +28,12 @@ export default function Signup({ serverRoles }) {
 
   if (status === "success") {
     // or change some states
-    console.log("All went well! prob");
+    console.log("All went well! prob - Signup comp");
   }
 
   if (status === "error") {
     // or change some states
-    console.log("Some error happened");
+    console.log("Some error happened - Signup comp");
   }
 
   return (
@@ -91,7 +94,7 @@ export default function Signup({ serverRoles }) {
       </div>
 
       {/* rol */}
-      {/* <div>
+      <div>
         <label htmlFor="rol">Label yourself:</label>
         <select name="rol" id="rol">
           {serverRoles.map((role) => (
@@ -100,7 +103,7 @@ export default function Signup({ serverRoles }) {
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
 
       {/* favourtie movie */}
       <div>
@@ -115,7 +118,7 @@ export default function Signup({ serverRoles }) {
       </div>
 
       {/* Blood type */}
-      {/* <div>
+      <div>
         <label htmlFor="bloodType">Blood Type:</label>
         <select name="bloodType" id="bloodType">
           {bloodTypes.map((type, i) => (
@@ -124,7 +127,7 @@ export default function Signup({ serverRoles }) {
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
 
       {status !== "loading" && (
         <div>
